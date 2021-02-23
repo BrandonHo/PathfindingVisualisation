@@ -1,8 +1,8 @@
 import Node from '../components/node';
 
-const GridTable = ({gridData, handleMouseEnter}) =>
+const GridTable = ({gridData, handleMouseDown, handleMouseEnter}) =>
 (
-    <table class="no-spacing">
+    <table className="no-spacing">
         <tbody>
             {gridData.map((row, rowIndex) =>
                 {
@@ -10,16 +10,17 @@ const GridTable = ({gridData, handleMouseEnter}) =>
                         <tr key={rowIndex}>
                             {row.map((node, nodeIndex) =>
                             {
-                                const {rowIndex, colIndex, isStart, isEnd, isVisited, isObstacle} = node;
+                                const {rowIndex, colIndex, isStartNode, isEndNode, isVisited, isObstacle} = node;
                                 return (
                                     <Node
                                         key={nodeIndex}
                                         rowIndex={rowIndex}
                                         colIndex={colIndex}
-                                        isStart={isStart}
-                                        isEnd={isEnd}
+                                        isStartNode={isStartNode}
+                                        isEndNode={isEndNode}
                                         isVisited={isVisited}
                                         isObstacle={isObstacle}
+                                        onMouseDown={(rowIndex, colIndex) => handleMouseDown(rowIndex, colIndex)}
                                         onMouseEnter={(rowIndex, colIndex) => handleMouseEnter(rowIndex, colIndex)}
                                     />
                                 );

@@ -1,7 +1,7 @@
 .node {
     width: 25px;
     height: 25px;
-    outline: 1px solid rgb(175, 216, 248);
+    outline: 1px solid rgb(94, 97, 102);
     display: inline-block;
 
     background-color:grey;
@@ -28,4 +28,10 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-play-state: running;
+
+    background-color: aqua;
+  }
+
+  .node-shortest-path {
+    background-color: blue;
   }
