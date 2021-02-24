@@ -1,7 +1,9 @@
 import DFSHelper from '../algorithms/dfs';
-import NodeArrayHelper from '../helpers/nodeArrayHelper';
 
 const COMMAND_ALGO_DFS = "dfs";
+
+const INITIAL_TIME_MULTIPLIER_VISITED_NODES = 10;
+const INITIAL_TIME_MULTIPLIER_END_NODE_PATH = 5;
 
 const NavBar = ({grid, startNodeIndices, endNodeIndices}) =>
 (
@@ -9,70 +11,68 @@ const NavBar = ({grid, startNodeIndices, endNodeIndices}) =>
         <button
             type="button"
             className=""
-            onClick={() => visualiseAlgo(COMMAND_ALGO_DFS, grid, startNodeIndices, endNodeIndices)}>
+            onClick={() => performAlgorithm(COMMAND_ALGO_DFS, grid, startNodeIndices, endNodeIndices)}>
             DFS
         </button>
     </nav>
 );
 
-function visualiseAlgo(algoCommand, grid, startNodeIndices, endNodeIndices)
+function performAlgorithm(algoCommand, grid, startNodeIndices, endNodeIndices)
 {
-    let visitedNodesOrdered = [];
-    let shortestPathNodes = [];
+    // Object that will hold both visited nodes + nodes from to end node (from algorithm)
+    let result = {};
 
+    // Perform the selected algorithm...
     switch (algoCommand) {
-        case "dfs":
-            visitedNodesOrdered = DFSHelper.dfs(grid, startNodeIndices, endNodeIndices);
+        case COMMAND_ALGO_DFS:
+            result = DFSHelper.PerformDFS(grid, startNodeIndices);
             break;
         default:
             break;
     }
 
-    shortestPathNodes = NodeArrayHelper.getNodesInShortestPathOrder(grid[endNodeIndices.rowIndex][endNodeIndices.colIndex]);
-
-
-    animate(visitedNodesOrdered, shortestPathNodes);
-    // console.log("Button test");
+    // ... then visualise the results
+    visualiseAlgorithm(result.visitedNodesOrdered, result.nodesFromPathToEndNode);
 }
 
-function animate(visitedNodesOrdered, shortestPathNodes)
+function visualiseAlgorithm(visitedNodesOrdered, nodesFromPathToEndNode)
 {
-    for (let i = 0; i <= visitedNodesOrdered.length; i++)
-    {
-        if (i === visitedNodesOrdered.length) {
-            setTimeout(() => {
-                animateShortestPath(shortestPathNodes);
-            }, 10 * i);
-            return;
-        }
+    visualiseVisitedNodes(visitedNodesOrdered);
 
+    // Begin visualising the nodes from the path to end node AFTER visited nodes have been visualised
+    setTimeout(() => {
+        visualiseNodesFromPathToEndNode(nodesFromPathToEndNode);
+    }, INITIAL_TIME_MULTIPLIER_VISITED_NODES * visitedNodesOrdered.length);
+}
+
+function visualiseVisitedNodes(visitedNodesOrdered)
+{
+    for (let i = 0; i < visitedNodesOrdered.length; i++)
+    {
         setTimeout(() => {
-            const node = visitedNodesOrdered[i];
+            const currentNode = visitedNodesOrdered[i];
             
-            if (!node.isStartNode && !node.isEndNode)
-            {
-                document.getElementById(`node-${node.rowIndex}-${node.colIndex}`).className = 'node node-visited';
-            }
-        }, 10 * i);
-        
+            // Color all nodes in the array that were visited in the algorithm
+            if (!currentNode.isStartNode && !currentNode.isEndNode)
+                document.getElementById(`node-${currentNode.rowIndex}-${currentNode.colIndex}`).className = 'node node-visited';
+
+        }, INITIAL_TIME_MULTIPLIER_VISITED_NODES * i);
     }
 }
 
-function animateShortestPath(shortestPathNodes)
+function visualiseNodesFromPathToEndNode(nodesFromPathToEndNode)
 {
-    for (let i = 0; i < shortestPathNodes.length; i++)
+    for (let i = 0; i < nodesFromPathToEndNode.length; i++)
     {
         setTimeout(() => {
+            const node = nodesFromPathToEndNode[i];
 
-            const node = shortestPathNodes[i];
+            // Color all nodes in the array that are in the end node path
             if (!node.isStartNode && !node.isEndNode)
-            {
-                document.getElementById(`node-${node.rowIndex}-${node.colIndex}`).className = 'node node-shortest-path';
-            }
-        }, 40 * i);
+                document.getElementById(`node-${node.rowIndex}-${node.colIndex}`).className = 'node node-end-path';
+
+        }, INITIAL_TIME_MULTIPLIER_END_NODE_PATH * i);
     }
 }
-
-
 
 export default NavBar;
