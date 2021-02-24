@@ -5,7 +5,6 @@ const Node = ({rowIndex, colIndex, isStartNode, isEndNode, isObstacle, isVisited
     const extraNodeClassName = isEndNode? 'node-end'
     : isStartNode? 'node-start'
     : isObstacle? 'node-obstacle'
-    : isVisited? 'node-visited'
     : '';
 
     return (<td
