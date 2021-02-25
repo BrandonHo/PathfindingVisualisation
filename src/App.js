@@ -4,10 +4,8 @@ import NavBar from './components/navbar';
 import GridHelper from './helpers/gridHelper';
 import GridTable from './components/gridTable';
 
-import DFSHelper from './algorithms/dfs';
-import ConstantHelper from './helpers/constants';
 import VisualiseAlgorithmHelper from './helpers/visualiseAlgorithmHelper';
-
+import PerformAlgorithmHelper from './helpers/performAlgorithmHelper';
 
 function App() {
 
@@ -20,26 +18,16 @@ function App() {
     const [startNodeIndices, setStartNodeIndices] = useState({});
     const [endNodeIndices, setEndNodeIndices] = useState({});
     const [grid, setGrid] = useState([]);
-    const [isMousePressed, setMousePressStatus] = useState(false);
 
     useEffect(() => {
 
         // Mimic componentDidMount
         if (!mounted.current)
         {
+            // Construct grid, select start + end nodes, then update state with grid
             let grid = GridHelper.constructGrid(30, 30);
-
-            // Randomly select a start node from grid
-            let newStartNodeIndices = GridHelper.getIndicesFromRandomNodeInGrid(grid);
-            grid[newStartNodeIndices.rowIndex][newStartNodeIndices.colIndex].isStartNode = true;
-            setStartNodeIndices(newStartNodeIndices);
-        
-            // Randomly select a end node from grid
-            let newEndNodeIndices = GridHelper.getIndicesFromRandomNodeInGrid(grid);
-            grid[newEndNodeIndices.rowIndex][newEndNodeIndices.colIndex].isEndNode = true;
-            setEndNodeIndices(newEndNodeIndices);
-        
-            // Set new grid data
+            setStartNodeIndices(GridHelper.selectStartNode(grid));
+            setEndNodeIndices(GridHelper.selectEndNode(grid));
             setGrid(grid);
 
             mounted.current = true;
@@ -48,42 +36,37 @@ function App() {
         else
         {
             if (isVisualisingAlgorithm)
-            {
                 VisualiseAlgorithmHelper.visualiseAlgorithm(visitedNodesOrdered, nodesFromPathToEndNode);
-            }
         }
     });
 
-    const handleMouseEnter = (row, col) => {
-        
+    const handleMouseDown = (selectedRowIndex, selectedColIndex) => {
+
+        if (isVisualisingAlgorithm)
+            return;
+
+        const updatedGrid = GridHelper.constructNewGridWithObstacleToggle(grid, selectedRowIndex, selectedColIndex);
+        setGrid(updatedGrid);
     }
 
-    const handleMouseDown = (row, col) => {
+    const clearGridCallback = () =>
+    {
+        // Clear any existing timeouts that are used for visualising algorithms + reset visualising status
+        VisualiseAlgorithmHelper.clearTimeouts();
+        setVisualiseAlgorithmStatus(false);
 
-        if (!isVisualisingAlgorithm)
-        {
-            const updatedGrid = GridHelper.constructNewGridWithObstacleToggle(grid, row, col);
-            setGrid(updatedGrid);
-        }
+        // Lastly, reset grid visit status + class names for nodes
+        setGrid(GridHelper.constructNewGridWithReset(grid));
     }
 
-    const performAlgorithmCallback = (algoCommandString) =>
+    const algoButtonCallback = (buttonCommandString) =>
     {
         // Only allow callbacks if not already visualising an algorithm
         if (isVisualisingAlgorithm)
             return;
 
         // Object that will hold both visited nodes + nodes from to end node (from algorithm)
-        let result = {};
-
-        // Perform the selected algorithm...
-        switch (algoCommandString) {
-            case ConstantHelper.COMMAND_ALGO_DFS:
-                result = DFSHelper.PerformDFS(grid, startNodeIndices);
-                break;
-            default:
-                break;
-        }
+        const result = PerformAlgorithmHelper.performAlgorithm(buttonCommandString, grid, startNodeIndices, endNodeIndices);
         
         // Update state with results + state to visualise algorithm
         setVisitedNodesOrdered(result.visitedNodesOrdered);
@@ -95,12 +78,12 @@ function App() {
         <div className="App">
         <header className="App-header">
             <NavBar
-                performAlgorithmCallback={performAlgorithmCallback}
+                clearGridCallback={clearGridCallback}
+                algoButtonCallback={algoButtonCallback}
             />
             <GridTable
                 gridData={grid}
                 handleMouseDown={handleMouseDown}
-                handleMouseEnter={handleMouseEnter}
             />
         </header>
         </div>

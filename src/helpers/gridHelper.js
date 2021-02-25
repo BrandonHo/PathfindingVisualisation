@@ -47,24 +47,59 @@ function getIndicesFromRandomNodeInGrid(grid)
     };
 }
 
-function constructNewGridWithObstacleToggle(oldGrid, rowIndex, colIndex)
+function selectStartNode(grid)
 {
-    // Copy contents from old grid
+    let startNodeIndices = getIndicesFromRandomNodeInGrid(grid);
+    grid[startNodeIndices.rowIndex][startNodeIndices.colIndex].isStartNode = true;
+    return startNodeIndices;
+}
+
+function selectEndNode(grid)
+{
+    let endNodeIndices = getIndicesFromRandomNodeInGrid(grid);
+    grid[endNodeIndices.rowIndex][endNodeIndices.colIndex].isEndNode = true;
+    return endNodeIndices;
+}
+
+function constructNewGridWithObstacleToggle(oldGrid, toggleRowIndex, toggleColIndex)
+{
+    // Copy contents from old grid...
     const newGrid = oldGrid.slice();
 
-    // Get the node to be toggled
-    const toggleNode = newGrid[rowIndex][colIndex];
-
-    // Only toggle if the node is not a start or end node
+    // ... then toggle the selected node
+    const toggleNode = newGrid[toggleRowIndex][toggleColIndex];
     if (!toggleNode.isStartNode && !toggleNode.isEndNode)
         toggleNode.isObstacle = !toggleNode.isObstacle;
     
-    // Return new grid
+    return newGrid;
+}
+
+function constructNewGridWithReset(oldGrid)
+{
+    // Copy contents from old grid...
+    const newGrid = oldGrid.slice();
+
+    // Reset visitation status for each node + reset class name (to reset styling)
+    for (let rowIndex = 0; rowIndex < oldGrid.length; rowIndex++)
+    {
+        for (let colIndex = 0; colIndex < oldGrid[rowIndex].length; colIndex++)
+        {
+            const currentNode = newGrid[rowIndex][colIndex];
+            currentNode.isVisited = false;
+
+            if (!currentNode.isStartNode && !currentNode.isEndNode)
+                document.getElementById(`node-${currentNode.rowIndex}-${currentNode.colIndex}`).className = "node";
+        }
+    }
+    
     return newGrid;
 }
 
 export default {
     constructGrid,
     constructNewGridWithObstacleToggle,
-    getIndicesFromRandomNodeInGrid
+    constructNewGridWithReset,
+    getIndicesFromRandomNodeInGrid,
+    selectStartNode,
+    selectEndNode
 };

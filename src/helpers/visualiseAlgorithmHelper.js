@@ -1,20 +1,27 @@
 import ConstantHelper from './constants';
 
+let timeoutsForVisualisingAlgorithm = [];
+
 function visualiseAlgorithm(visitedNodesOrdered, nodesFromPathToEndNode)
 {
+    // Clear array to store all new timeouts constructed for visualising the algorithm
+    timeoutsForVisualisingAlgorithm = [];
+
     visualiseVisitedNodes(visitedNodesOrdered);
 
-    // Begin visualising the nodes from the path to end node AFTER visited nodes have been visualised
-    setTimeout(() => {
+    // Intialise timeout for visualising nodes from path to end node (starts after visited nodes visualised)
+    const timeoutToStartEndPathVisualisation = setTimeout(() => {
         visualiseNodesFromPathToEndNode(nodesFromPathToEndNode);
     }, ConstantHelper.INITIAL_TIME_MULTIPLIER_VISITED_NODES * visitedNodesOrdered.length);
+
+    timeoutsForVisualisingAlgorithm.push(timeoutToStartEndPathVisualisation);
 }
 
 function visualiseVisitedNodes(visitedNodesOrdered)
 {
     for (let i = 0; i < visitedNodesOrdered.length; i++)
     {
-        setTimeout(() => {
+        const timeoutForVisitedNode = setTimeout(() => {
             const currentNode = visitedNodesOrdered[i];
             
             // Color all nodes in the array that were visited in the algorithm
@@ -22,6 +29,8 @@ function visualiseVisitedNodes(visitedNodesOrdered)
                 document.getElementById(`node-${currentNode.rowIndex}-${currentNode.colIndex}`).className = 'node node-visited';
 
         }, ConstantHelper.INITIAL_TIME_MULTIPLIER_VISITED_NODES * i);
+
+        timeoutsForVisualisingAlgorithm.push(timeoutForVisitedNode);
     }
 }
 
@@ -29,7 +38,7 @@ function visualiseNodesFromPathToEndNode(nodesFromPathToEndNode)
 {
     for (let i = 0; i < nodesFromPathToEndNode.length; i++)
     {
-        setTimeout(() => {
+        const timeoutForNodeFromPathToEndNode = setTimeout(() => {
             const node = nodesFromPathToEndNode[i];
 
             // Color all nodes in the array that are in the end node path
@@ -37,9 +46,18 @@ function visualiseNodesFromPathToEndNode(nodesFromPathToEndNode)
                     document.getElementById(`node-${node.rowIndex}-${node.colIndex}`).className = 'node node-end-path';
 
         }, ConstantHelper.INITIAL_TIME_MULTIPLIER_END_NODE_PATH * i);
+
+        timeoutsForVisualisingAlgorithm.push(timeoutForNodeFromPathToEndNode);
     }
 }
 
+function clearTimeouts()
+{
+    for (let timeoutIndex = 0; timeoutIndex < timeoutsForVisualisingAlgorithm.length; timeoutIndex++)
+        clearTimeout(timeoutsForVisualisingAlgorithm[timeoutIndex]);
+}
+
 export default {
-    visualiseAlgorithm
+    visualiseAlgorithm,
+    clearTimeouts
 }

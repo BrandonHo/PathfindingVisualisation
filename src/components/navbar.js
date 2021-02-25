@@ -1,13 +1,19 @@
 import ConstantHelper from '../helpers/constants';
 
-function NavBar({performAlgorithmCallback})
+function NavBar({clearGridCallback, algoButtonCallback})
 {   
     return (
     <nav id="navbar">
         <button
             type="button"
             className=""
-            onClick={() => performAlgorithmCallback(ConstantHelper.COMMAND_ALGO_DFS)}>
+            onClick={() => clearGridCallback()}>
+            Reset Grid
+        </button>
+        <button
+            type="button"
+            className=""
+            onClick={() => algoButtonCallback(ConstantHelper.COMMAND_ALGO_DFS)}>
             DFS
         </button>
     </nav>);

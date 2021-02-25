@@ -1,6 +1,6 @@
 import Node from '../components/node';
 
-const GridTable = ({gridData, handleMouseDown, handleMouseEnter}) =>
+const GridTable = ({gridData, handleMouseDown}) =>
 (
     <table className="no-spacing">
         <tbody>
@@ -21,7 +21,6 @@ const GridTable = ({gridData, handleMouseDown, handleMouseEnter}) =>
                                         isVisited={isVisited}
                                         isObstacle={isObstacle}
                                         onMouseDown={(rowIndex, colIndex) => handleMouseDown(rowIndex, colIndex)}
-                                        onMouseEnter={(rowIndex, colIndex) => handleMouseEnter(rowIndex, colIndex)}
                                     />
                                 );
                             })}

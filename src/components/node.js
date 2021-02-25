@@ -11,8 +11,6 @@ const Node = ({rowIndex, colIndex, isStartNode, isEndNode, isObstacle, isVisited
         id={`node-${rowIndex}-${colIndex}`}
         className={`node ${extraNodeClassName}`}
         onMouseDown={() => onMouseDown(rowIndex, colIndex)}
-        onMouseEnter={() => onMouseEnter(rowIndex, colIndex)}
-        // onMouseUp={() => onMouseUp(rowIndex, colIndex)}
     ></td>);
 }
 
