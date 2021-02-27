@@ -25,7 +25,7 @@ function App() {
         if (!mounted.current)
         {
             // Construct grid, select start + end nodes, then update state with grid
-            let grid = GridHelper.constructGrid(30, 30);
+            let grid = GridHelper.constructGrid(20, 20);
             setStartNodeIndices(GridHelper.selectStartNode(grid));
             setEndNodeIndices(GridHelper.selectEndNode(grid));
             setGrid(grid);

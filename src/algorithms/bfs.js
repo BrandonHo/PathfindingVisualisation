@@ -49,7 +49,7 @@ function tryAddNeighbourNode(helperQueue, currentNode, grid, rowIndex, colIndex)
 
 function tryGetNonVisitedNode(grid, rowIndex, colIndex)
 {
-    if (rowIndex < 0 || rowIndex >= grid.length || colIndex < 0 || colIndex >= grid[rowIndex.length])
+    if (rowIndex < 0 || rowIndex >= grid.length || colIndex < 0 || colIndex >= grid[rowIndex].length)
         return null;
 
     if (grid[rowIndex][colIndex].isVisited)
