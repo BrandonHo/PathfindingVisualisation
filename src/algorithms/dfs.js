@@ -49,7 +49,7 @@ function DFS(grid, rowIndex, colIndex)
         // If check node defined, then we have a path to the end node
         if (checkNode !== null)
         {
-            nodesFromPathToEndNode.push(checkNode);
+            nodesFromPathToEndNode.unshift(checkNode);
             return currentNode;
         }
     }

@@ -1,4 +1,5 @@
-import DFSHelper from '../algorithms/dfs'
+import DFSHelper from '../algorithms/dfs';
+import BFSHelper from '../algorithms/bfs';
 import ConstantHelper from '../helpers/constants';
 
 function performAlgorithm(algorithmCommand, grid, startNodeIndices, endNodeIndices)
@@ -9,6 +10,9 @@ function performAlgorithm(algorithmCommand, grid, startNodeIndices, endNodeIndic
     switch (algorithmCommand) {
         case ConstantHelper.COMMAND_ALGO_DFS:
             result = DFSHelper.PerformDFS(grid, startNodeIndices);
+            break;
+        case ConstantHelper.COMMAND_ALGO_BFS:
+            result = BFSHelper.PerformBFS(grid, startNodeIndices);
             break;
         default:
             break;

@@ -86,6 +86,7 @@ function constructNewGridWithReset(oldGrid)
         {
             const currentNode = newGrid[rowIndex][colIndex];
             currentNode.isVisited = false;
+            currentNode.isObstacle = false;
 
             if (!currentNode.isStartNode && !currentNode.isEndNode)
                 document.getElementById(`node-${currentNode.rowIndex}-${currentNode.colIndex}`).className = "node";

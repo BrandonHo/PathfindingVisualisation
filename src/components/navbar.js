@@ -16,6 +16,12 @@ function NavBar({clearGridCallback, algoButtonCallback})
             onClick={() => algoButtonCallback(ConstantHelper.COMMAND_ALGO_DFS)}>
             DFS
         </button>
+        <button
+            type="button"
+            className=""
+            onClick={() => algoButtonCallback(ConstantHelper.COMMAND_ALGO_BFS)}>
+            BFS
+        </button>
     </nav>);
 }
 
