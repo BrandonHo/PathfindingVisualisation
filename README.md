@@ -4,8 +4,6 @@ This react project provides a visualisation of pathfinding algorithms. I primari
 
 This project is inspired by Clement Mihailescu's video about a pathfinding visualiser project, which can be found [here](https://youtu.be/n4t_-NjY_Sg).
 
-___
-
 ## Installation Instructions
 
 1. Install node.js.
