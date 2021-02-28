@@ -1,6 +1,6 @@
-# React Pathfinding Visualiser
+# React Pathfinding Visualisation
 
-This react project provides a visualisation of pathfinding algorithms. I primarily created this project to learn about and become more familiar with React hooks. This project specifically uses functional components (with React hooks), rather than class components.
+This react project provides a visualisation of pathfinding algorithms. I primarily created this project to learn about and become more familiar with React hooks. A live demonstration of the pathfinding visualiser can be found at the following [link](https://brandonho.github.io/PathfindingVisualisation/).
 
 This project is inspired by Clement Mihailescu's video about a pathfinding visualiser project, which can be found [here](https://youtu.be/n4t_-NjY_Sg).
 
