@@ -1,44 +1,40 @@
 import './App.css';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import NavBar from './components/navbar';
 import GridHelper from './helpers/gridHelper';
 import GridTable from './components/gridTable';
-
 import VisualiseAlgorithmHelper from './helpers/visualiseAlgorithmHelper';
 import PerformAlgorithmHelper from './helpers/performAlgorithmHelper';
 
 function App() {
 
-    const mounted = useRef();
-
     const [visitedNodesOrdered, setVisitedNodesOrdered] = useState([]);
     const [nodesFromPathToEndNode, setNodesFromPathToEndNode] = useState([]);
     const [isVisualisingAlgorithm, setVisualiseAlgorithmStatus] = useState(false);
-
     const [startNodeIndices, setStartNodeIndices] = useState({});
     const [endNodeIndices, setEndNodeIndices] = useState({});
     const [grid, setGrid] = useState([]);
 
-    useEffect(() => {
+    // Mimic componentDidMount
+    useEffect(initialiseGrid, []);
 
-        // Mimic componentDidMount
-        if (!mounted.current)
-        {
-            // Construct grid, select start + end nodes, then update state with grid
-            let grid = GridHelper.constructGrid(20, 20);
-            setStartNodeIndices(GridHelper.selectStartNode(grid));
-            setEndNodeIndices(GridHelper.selectEndNode(grid));
-            setGrid(grid);
+    // Mimic componentDidUpdate with isVisualisingAlgorithm state
+    useEffect(visualiseAlgorithm, [isVisualisingAlgorithm]);
 
-            mounted.current = true;
-        }
-        // Mimic componentDidUpdate
-        else
-        {
-            if (isVisualisingAlgorithm)
-                VisualiseAlgorithmHelper.visualiseAlgorithm(visitedNodesOrdered, nodesFromPathToEndNode);
-        }
-    });
+    function initialiseGrid()
+    {
+        // Construct grid, select start + end nodes, then update state with grid
+        let grid = GridHelper.constructGrid(20, 20);
+        setStartNodeIndices(GridHelper.selectStartNode(grid));
+        setEndNodeIndices(GridHelper.selectEndNode(grid));
+        setGrid(grid);
+    }
+
+    function visualiseAlgorithm()
+    {
+        if (isVisualisingAlgorithm)
+            VisualiseAlgorithmHelper.visualiseAlgorithm(visitedNodesOrdered, nodesFromPathToEndNode);
+    }
 
     const handleMouseDown = (selectedRowIndex, selectedColIndex) => {
 
